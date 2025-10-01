@@ -1,36 +1,37 @@
-// List of sounds (must match file names in /sounds folder)
 const sounds = ['applause', 'boo', 'gasp', 'tada', 'victory', 'wrong'];
+const buttonsContainer = document.getElementById('buttons');
+let currentAudio = null;
 
-const buttons = document.getElementById('buttons');
-
-// Generate sound buttons dynamically
+// Create buttons for each sound
 sounds.forEach(sound => {
-  const btn = document.createElement('button');
-  btn.className = 'btn';
-  btn.innerText = sound;
-
-  btn.addEventListener('click', () => {
-    stopSounds();
-    const audio = new Audio(`./sounds/${sound}.mp3`);
-    audio.play();
-    window.currentAudio = audio;
-  });
-
-  buttons.appendChild(btn);
+    const btn = document.createElement('button');
+    btn.className = 'btn';
+    btn.textContent = sound;
+    btn.addEventListener('click', () => playSound(sound));
+    buttonsContainer.appendChild(btn);
 });
 
 // Create stop button
 const stopBtn = document.createElement('button');
-stopBtn.className = 'btn stop';
-stopBtn.innerText = 'stop';
+stopBtn.className = 'stop';
+stopBtn.textContent = 'stop';
+stopBtn.addEventListener('click', stopSound);
+buttonsContainer.appendChild(stopBtn);
 
-stopBtn.addEventListener('click', stopSounds);
-buttons.appendChild(stopBtn);
+// Function to play audio
+function playSound(name) {
+    if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+    }
+    currentAudio = new Audio(`sounds/${name}.mp3`);
+    currentAudio.play();
+}
 
-// Stop currently playing sound
-function stopSounds() {
-  if (window.currentAudio) {
-    window.currentAudio.pause();
-    window.currentAudio.currentTime = 0;
-  }
+// Function to stop audio
+function stopSound() {
+    if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+    }
 }
